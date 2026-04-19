@@ -1,0 +1,16 @@
+{
+  "name": "data-hub",
+  "version": "1.0.0",
+  "description": "Mock data API for CustomDash testing - multi-domain datasets",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "node --watch api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
