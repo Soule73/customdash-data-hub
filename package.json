@@ -5,7 +5,12 @@
   "main": "api/index.js",
   "scripts": {
     "start": "node api/index.js",
-    "dev": "node --watch api/index.js"
+    "dev": "node --watch api/index.js",
+    "generate": "node scripts/generate-all.js",
+    "generate:salles": "node scripts/generate-salles.js",
+    "generate:orders": "node scripts/generate-orders.js",
+    "generate:employees": "node scripts/generate-employees.js",
+    "generate:products": "node scripts/generate-products.js"
   },
   "dependencies": {
     "express": "^4.21.2"
