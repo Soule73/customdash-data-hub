@@ -17,15 +17,29 @@ function loadDataset(filename) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
-app.use((_req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 'no-store');
   next();
 });
 
-app.options('*', (_req, res) => {
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.sendStatus(204);
 });
 
@@ -42,28 +56,28 @@ app.get('/', (_req, res) => {
       {
         name: 'salles',
         endpoint: '/api/salles',
-        description: 'Meeting rooms — capacity, status, bookings, ratings',
+        description: 'Meeting rooms - capacity, status, bookings, ratings',
         count: loadDataset('salles').length,
         filters: ['building', 'status', 'hasProjector', 'hasVideoConference'],
       },
       {
         name: 'orders',
         endpoint: '/api/orders',
-        description: 'E-commerce orders — sales, regions, categories (2025-2026)',
+        description: 'E-commerce orders - sales, regions, categories (2025-2026)',
         count: loadDataset('orders').length,
         filters: ['region', 'category', 'status', 'paymentMethod', 'year', 'month'],
       },
       {
         name: 'employees',
         endpoint: '/api/employees',
-        description: 'HR employee data — departments, salaries, performance',
+        description: 'HR employee data - departments, salaries, performance',
         count: loadDataset('employees').length,
         filters: ['department', 'status', 'gender', 'country', 'remote'],
       },
       {
         name: 'products',
         endpoint: '/api/products',
-        description: 'Product inventory — stock levels, sales, ratings',
+        description: 'Product inventory - stock levels, sales, ratings',
         count: loadDataset('products').length,
         filters: ['category', 'brand', 'status', 'warehouse'],
       },

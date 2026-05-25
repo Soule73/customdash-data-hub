@@ -132,7 +132,7 @@ GET /api/products?category=Electronics&status=in_stock
 
 - All endpoints return `Content-Type: application/json`
 - All responses include `Cache-Control: no-store` to prevent stale data
-- CORS is open (`*`) — usable from any origin
+- CORS is open (`*`) - usable from any origin
 - Invalid or unknown query parameters are silently ignored
 - Filters are case-insensitive for string values
 
